@@ -3,7 +3,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.DecimalFormat;
@@ -29,7 +28,7 @@ public class PanelTemp extends JPanel {
 	
 	//Logic
 	private Float temp = null;
-	private int isLeft = 0;
+	private int isLeft = 1;
 	private String tFrom;
 	private String tTo;
 	private Float tempOut;
@@ -101,16 +100,18 @@ public class PanelTemp extends JPanel {
 		gbc.gridy = 1;
 		convert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//whichSide(f1,f2); //returns the number
-				//System.out.println(temp);
 				isLeft = checkSide(f1, f2);
-				temp = (checkValue(f1, f2, isLeft));
-				tFrom = getFrom(tempList1, tempList2, isLeft);
-				tTo = getTo(tempList1,tempList2, isLeft);
-				tempOut = logic(temp, tFrom, tTo);
-				outTemp(isLeft, f1, f2, tempOut);
+				if (isLeft != 0) {
+					temp = (checkValue(f1, f2, isLeft));
+					if (temp != null) {
+						tFrom = getFrom(tempList1, tempList2, isLeft);
+						tTo = getTo(tempList1,tempList2, isLeft);
+						tempOut = logic(temp, tFrom, tTo);
+						outTemp(isLeft, f1, f2, tempOut);
+					}
+				}
 			}
-			});
+		});
 		add(convert, gbc);
 
 	}
@@ -128,26 +129,22 @@ public class PanelTemp extends JPanel {
 	
 	//Check if the value is valid
 	public Float checkValue(JTextField a, JTextField b, int i) {
-		if(i < 1) {
-			return null;
-		} else if (i ==1) {
+		if (i == 1) {
 			try {
 				temp = Float.parseFloat(a.getText());
-				return temp;
 			}
 			catch (NumberFormatException e1) {
-				System.out.println("Not a number");
+				temp = null;
 			}
 		} else if(i == 2) {
 			try {
 				temp = Float.parseFloat(b.getText());
-				return temp;
 			}
 			catch (NumberFormatException e2) {
-				System.out.println("Not a number");
-			}
+				temp = null;
+			} 
 		}
-		return null;
+		return temp;
 	}
 	
 	//Reads drop down box from inputed side
@@ -184,6 +181,8 @@ public class PanelTemp extends JPanel {
 			tempOut = (float) (temp -273.15);
 		} else if (from == "Kelvin" && to == "Fahrenheit") {
 			tempOut = (float) ((((temp -273.15)*9)/5) +32);
+		} else {
+			tempOut = temp;
 		}
 		return tempOut;
 	}
@@ -195,6 +194,9 @@ public class PanelTemp extends JPanel {
 		} else if (i == 2) {
 			a.setText(String.valueOf(roundTwoDP(f)));
 		}
+		temp = null;
+		tempOut = null;
+		isLeft = 0;
 	}
 	
 	//Rounds results to 2DP
