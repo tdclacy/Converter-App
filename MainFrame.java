@@ -13,12 +13,12 @@ public class MainFrame extends JFrame {
 
 	JPanel panelContent = new JPanel();
 	JPanel panelTemp = new JPanel();
-	JPanel panelNew = new JPanel();
+	JPanel panelHeight = new JPanel();
 	JPanel panelNew2 = new JPanel();
 	JPanel panelNew3 = new JPanel();
 	JPanel panelButtons = new JPanel();
 	JButton buttonTemp = new JButton("Temperature");
-	JButton buttonNew = new JButton("Coming Soon");
+	JButton buttonNew = new JButton("Height");
 	JButton buttonNew2 = new JButton("Coming Soon");
 	JButton buttonNew3 = new JButton("Coming Soon");
 	CardLayout cl = new CardLayout();
@@ -38,12 +38,12 @@ public class MainFrame extends JFrame {
 		add(panelButtons, BorderLayout.WEST);
 		
 		panelTemp = new PanelTemp();
-		panelNew.setBackground(Color.green);
+		panelHeight = new PanelHeight();
 		panelNew2.setBackground(Color.red);
 		panelNew3.setBackground(Color.yellow);
 		
 		panelContent.add(panelTemp, "Temp");
-		panelContent.add(panelNew, "New");
+		panelContent.add(panelHeight, "Height");
 		panelContent.add(panelNew2, "New2");
 		panelContent.add(panelNew3, "New3");
 		
@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
 		
 		buttonNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cl.show(panelContent, "New");
+				cl.show(panelContent, "Height");
 			}
 		});
 		
