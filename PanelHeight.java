@@ -120,8 +120,10 @@ public class PanelHeight extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (f1.getText().isEmpty() && f2.getText().isEmpty() && !f3.getText().isEmpty()) {
 					fromCM();
-				} else {
+				} else if ((f1.getText().isEmpty() && !f2.getText().isEmpty() && f3.getText().isEmpty()) || (!f1.getText().isEmpty() && f2.getText().isEmpty() && f3.getText().isEmpty()) || (!f1.getText().isEmpty() && !f2.getText().isEmpty() && f3.getText().isEmpty())) {
 					toCM();
+				} else if (f1.getText().isEmpty() && f2.getText().isEmpty() && f3.getText().isEmpty()) {
+					
 				}
 			}
 		});
@@ -130,35 +132,46 @@ public class PanelHeight extends JPanel {
 	
 	
 	public void fromCM() {
-		cm = Float.parseFloat(f3.getText());
-		inch = (float) (cm * 0.39370079);
-		feet = (int) (inch/12);
-		inch = (float) (inch % 12);
-		f1.setText(String.valueOf(feet));
-		f2.setText(String.valueOf(roundTwoDP(inch)));
-		cm = (float) 0;
-		inch = (float) 0;
-		feet = 0;
+		try {
+			cm = Float.parseFloat(f3.getText());
+			inch = (float) (cm * 0.39370079);
+			feet = (int) (inch/12);
+			inch = (float) (inch % 12);
+			f1.setText(String.valueOf(feet));
+			f2.setText(String.valueOf(roundTwoDP(inch)));
+			cm = (float) 0;
+			inch = (float) 0;
+			feet = 0;
+		}
+		catch (NumberFormatException e) {
+
+		}
+
 	}
 	
 	public void toCM () {
-		if (f1.getText().isEmpty()) {
+		try {
+			if (f1.getText().isEmpty()) {
+				feet = 0;
+			} else {
+				feet = Integer.valueOf(f1.getText());
+			}
+			if (f2.getText().isEmpty() ) {
+				inch = (float) 0;
+			} else {
+				inch = Float.parseFloat(f2.getText());
+			}
+			temp = (float) (feet * 12);
+			inch = inch + temp;
+			cm = (float) (inch * 2.54);
+			f3.setText(String.valueOf(cm));
 			feet = 0;
-		} else {
-			feet = Integer.valueOf(f1.getText());
-		}
-		if (f2.getText().isEmpty() ) {
 			inch = (float) 0;
-		} else {
-			inch = Float.parseFloat(f2.getText());
+			temp = (float) 0;
 		}
-		temp = (float) (feet * 12);
-		inch = inch + temp;
-		cm = (float) (inch * 2.54);
-		f3.setText(String.valueOf(cm));
-		feet = 0;
-		inch = (float) 0;
-		temp = (float) 0;
+		catch (NumberFormatException e) {
+			
+		}
 	}
 
 	
